@@ -1,1 +1,7 @@
-
+streamlit
+requests
+pandas
+numpy
+matplotlib
+scipy
+pywt
