@@ -20,6 +20,12 @@ def post_data():
         buffer.pop(0)
     return "OK", 200
 
+@app.route('/reset', methods=['POST'])
+def reset_buffer():
+    global buffer
+    buffer = []
+    return {"status": "buffer cleared"}, 200
+
 
 @app.route('/latest', methods=['GET'])
 def get_latest():
