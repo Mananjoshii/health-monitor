@@ -1,7 +1,2 @@
-streamlit
-requests
-pandas
-numpy
-matplotlib
-scipy
-PyWavelets
+flask
+flask-cors
