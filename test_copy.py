@@ -11,7 +11,7 @@ st.set_page_config(page_title="Live Health Monitor", layout="wide")
 st.title("💓 Live Health Monitor (Deployed)")
 
 # ✅ URL of deployed Flask server
-API_URL = "https://yourapi.onrender.com/latest"  # Replace with your Flask endpoint
+API_URL = "https://health-monitor-7lno.onrender.com"  # Replace with your Flask endpoint
 
 # --- 1. Fetch IR/RED values from deployed Flask server ---
 def fetch_data():
