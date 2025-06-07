@@ -178,6 +178,11 @@ def main():
     st.session_state['ir_values'] = []
     st.session_state['red_values'] = []
 
+   if st.button("🔁 Start New Patient Session"):
+    requests.post("https://health-monitor-7lno.onrender.com/reset")
+    st.success("🧹 Buffer cleared! Ready for new patient.")
+    
+
     ir_values, red_values = read_ir_data()
     st.session_state['ir_values'] = ir_values
     st.session_state['red_values'] = red_values
