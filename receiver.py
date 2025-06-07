@@ -11,11 +11,13 @@ buffer = []
 @app.route('/postdata', methods=['POST'])
 def post_data():
     content = request.get_json()
-    if content:
-        for item in content:
-            buffer.append((item['ir'], item['red']))
-        while len(buffer) > 1000:
-            buffer.pop(0)
+    if isinstance(content, list):  # batch
+        for sample in content:
+            buffer.append((sample['ir'], sample['red']))
+    elif isinstance(content, dict):  # single
+        buffer.append((content['ir'], content['red']))
+    while len(buffer) > 1000:
+        buffer.pop(0)
     return "OK", 200
 
 
