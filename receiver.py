@@ -12,11 +12,12 @@ buffer = []
 def post_data():
     content = request.get_json()
     if content:
-        buffer.append((content['ir'], content['red']))
-        # Keep only last 1000 readings
-        if len(buffer) > 1000:
+        for item in content:
+            buffer.append((item['ir'], item['red']))
+        while len(buffer) > 1000:
             buffer.pop(0)
     return "OK", 200
+
 
 @app.route('/latest', methods=['GET'])
 def get_latest():
