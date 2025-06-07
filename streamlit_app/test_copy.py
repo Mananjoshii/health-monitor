@@ -169,33 +169,39 @@ def analyze_signal(ir_values, red_values, fs, name, age, gender):
 # === MAIN APP ===
 def main():
     st.title("🌡️ IoT Vital Sign Monitor (Cloud)")
+
     st.sidebar.header("👤 Patient Info")
     name = st.sidebar.text_input("Name")
     age = st.sidebar.text_input("Age")
     gender = st.sidebar.selectbox("Gender", ["Male", "Female", "Other"])
 
-   if st.button("Start Data Collection"):
-    st.session_state['ir_values'] = []
-    st.session_state['red_values'] = []
+    # Reset buffer manually if requested
+    if st.button("🔁 Start New Patient Session"):
+        try:
+            requests.post("https://health-monitor-7lno.onrender.com/reset")
+            st.success("🧹 Buffer cleared! Ready for new patient.")
+        except:
+            st.warning("⚠ Could not reach the Flask reset endpoint.")
 
-   if st.button("🔁 Start New Patient Session"):
-    requests.post("https://health-monitor-7lno.onrender.com/reset")
-    st.success("🧹 Buffer cleared! Ready for new patient.")
-    
+    # Start data collection
+    if st.button("Start Data Collection"):
+        st.session_state['ir_values'] = []
+        st.session_state['red_values'] = []
 
-    ir_values, red_values = read_ir_data()
-    st.session_state['ir_values'] = ir_values
-    st.session_state['red_values'] = red_values
+        ir_values, red_values = read_ir_data()
+        st.session_state['ir_values'] = ir_values
+        st.session_state['red_values'] = red_values
 
-    if not ir_values or not red_values:
-        st.warning("⚠ No IR or RED data collected.")
-        return
+        if not ir_values or not red_values:
+            st.warning("⚠ No IR or RED data collected.")
+            return
 
         fs = len(ir_values) / READ_DURATION
         pd.DataFrame(ir_values, columns=["IR"]).to_csv(SAVE_IR_PATH, index=False)
         pd.DataFrame(red_values, columns=["RED"]).to_csv(SAVE_RED_PATH, index=False)
         st.write(f"📁 Saved {len(ir_values)} IR samples to {SAVE_IR_PATH}")
         st.write(f"📁 Saved {len(red_values)} RED samples to {SAVE_RED_PATH}")
+
         analyze_signal(ir_values, red_values, fs, name, age, gender)
 
 if __name__ == "__main__":
