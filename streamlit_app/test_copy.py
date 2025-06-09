@@ -168,7 +168,7 @@ def analyze_signal(ir_values, red_values, fs, name, age, gender):
 
 # === MAIN APP ===
 def main():
-    st.title("🌡️ IoT Vital Sign Monitor (Cloud)")
+    st.title("IoT HealthStation-RVCE")
 
     st.sidebar.header("👤 Patient Info")
     name = st.sidebar.text_input("Name")
